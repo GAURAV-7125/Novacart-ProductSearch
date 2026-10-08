@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NovaCart • DSA Product Explorer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="aurora a1"></div><div class="aurora a2"></div><div class="grid-bg"></div>
+
+  <header class="topbar">
+    <div class="brand"><div class="brand-icon">✦</div><div><h1>NovaCart</h1><p>DSA-powered product explorer</p></div></div>
+    <nav>
+      <button class="nav-btn active" onclick="showSection('shop', this)">Shop</button>
+      <button class="nav-btn" onclick="showSection('wishlist', this)">♡ Wishlist <span id="wishCount">0</span></button>
+      <button class="nav-btn" onclick="showSection('recommendations', this)">✦ For You</button>
+    </nav>
+    <button class="add-btn" onclick="openModal()">＋ Add Product</button>
+  </header>
+
+  <main class="container">
+    <section id="shop" class="section active-section">
+      <div class="hero">
+        <div class="hero-copy">
+          <span class="badge">100+ NEW PRODUCTS ADDED</span>
+          <h2>Search smarter.<br><span>Shop your way.</span></h2>
+          <p>Trie prefix search, fast ID lookup, Merge Sort price ranking, wishlist intelligence and personalized recommendations.</p>
+          <div class="hero-buttons"><button class="hero-btn" onclick="document.getElementById('nameSearch').focus()">Start Searching →</button><button class="ghost-btn" onclick="showSection('recommendations', document.querySelectorAll('.nav-btn')[2])">Discover for me</button></div>
+        </div>
+        <div class="orb"><div class="orb-core">⌕</div><span class="float-tag t1">TRIE</span><span class="float-tag t2">HASH</span><span class="float-tag t3">SORT</span></div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card"><span>▦</span><div><strong id="productCount">0</strong><small>Products</small></div></div>
+        <div class="stat-card"><span>◈</span><div><strong id="categoryCount">0</strong><small>Categories</small></div></div>
+        <div class="stat-card"><span>♡</span><div><strong id="wishStat">0</strong><small>Wishlist</small></div></div>
+        <div class="stat-card"><span>★</span><div><strong id="ratingStat">0.0</strong><small>Avg. Rating</small></div></div>
+      </div>
+
+      <section class="controls glass">
+        <div class="search-box wide"><label>⌕ Name / Prefix Search</label><input id="nameSearch" placeholder="Try: Mac, Nike, Samsung, Data..." oninput="searchByName()"></div>
+        <div class="search-box"><label># Exact Product ID</label><input id="idSearch" type="number" placeholder="e.g. 101" oninput="searchById()"></div>
+        <div><label>Category</label><select id="category" onchange="loadProducts()"><option value="">All Categories</option></select></div>
+        <div><label>Price</label><select id="sort" onchange="loadProducts()"><option value="none">Default</option><option value="asc">Low → High</option><option value="desc">High → Low</option></select></div>
+      </section>
+
+      <div class="toolbar"><div><span class="eyebrow">CATALOG</span><h3 id="resultTitle">All Products</h3></div><button class="secondary" onclick="resetFilters()">Reset</button></div>
+      <section class="table-card glass"><table><thead><tr><th>ID</th><th>Product</th><th>Category</th><th>Price</th><th>Rating</th><th>Save</th><th>Actions</th></tr></thead><tbody id="productTable"></tbody></table><div id="empty" class="empty hidden">No products found.</div></section>
+    </section>
+
+    <section id="wishlist" class="section">
+      <div class="page-heading"><span class="badge">YOUR COLLECTION</span><h2>Wishlist <span>♡</span></h2><p>Save products you love. Your wishlist also powers the recommendation engine.</p></div>
+      <div id="wishlistGrid" class="product-grid"></div>
+      <div id="wishlistEmpty" class="empty-card hidden">♡<h3>Your wishlist is empty</h3><p>Tap the heart on any product to save it here.</p></div>
+    </section>
+
+    <section id="recommendations" class="section">
+      <div class="page-heading"><span class="badge">SMART PICKS</span><h2>Made <span>For You</span> ✦</h2><p>Recommendations use your wishlist categories and product ratings to find your next favorite.</p></div>
+      <div id="recommendationGrid" class="product-grid"></div>
+    </section>
+  </main>
+
+  <div id="modal" class="modal hidden"><div class="modal-card"><button class="close" onclick="closeModal()">×</button><span class="eyebrow">PRODUCT MANAGER</span><h2 id="modalTitle">Add Product</h2><form id="productForm"><input id="formId" type="number" placeholder="Product ID" required><input id="formName" placeholder="Product name" required><input id="formCategory" placeholder="Category" required><input id="formPrice" type="number" step="0.01" placeholder="Price" required><input id="formRating" type="number" step="0.1" min="0" max="5" placeholder="Rating (0-5)" required><button class="hero-btn" type="submit">Save Product ✦</button></form></div></div>
+  <div id="toast"></div>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
